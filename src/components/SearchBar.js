@@ -1,12 +1,18 @@
 import React from 'react';
+import youtube from '../api/youtube';
 
 
 class SearchBar extends React.Component{
+  state = {term:''};
 
   formHandler = (event) => {
     event.preventDefault()
-    console.log(event);
+    this.props.onTermSubmit(this.state.term);
   }
+
+  onTermChange = e =>{
+    this.setState({term: e.target.value});
+  };
 
   render() {
     return (
@@ -14,7 +20,7 @@ class SearchBar extends React.Component{
         <form className="ui form" onSubmit={this.formHandler}>
           <div className="field">
             <label>Video search</label>
-            <input type="text" placeholder="search video" />
+            <input type="text" placeholder="search video" onChange={this.onTermChange} />
           </div>
         </form>
       </div>
