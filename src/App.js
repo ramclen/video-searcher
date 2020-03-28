@@ -2,10 +2,10 @@ import React from "react";
 import SearchBar from "./components/SearchBar"
 import youtube from "./api/youtube"
 import VideoList from "./components/VideoList"
-
+import VideoDetail from "./components/VideoDetail";
 class App extends React.Component {
 
-  state = {videos: []}
+  state = {videos: [], selectedVideo: null}
 
   onTermSubmit = term => {
     youtube.get('/search', { params: {
@@ -17,11 +17,16 @@ class App extends React.Component {
     })
   };
 
+  onVideoSelected = (video) =>{
+    this.setState({selectedVideo:video})
+  }
+
   render() {
     return (
       <div>
         <SearchBar onTermSubmit={this.onTermSubmit} />
-        <VideoList videos={this.state.videos} />
+        <VideoDetail video={this.state.selectedVideo} />
+        <VideoList videos={this.state.videos} onVideoSelected={this.onVideoSelected} />
       </div>
     );
   }
