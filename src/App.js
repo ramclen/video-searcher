@@ -7,13 +7,17 @@ class App extends React.Component {
 
   state = {videos: [], selectedVideo: null}
 
+  componentDidMount(){
+    this.onTermSubmit('buildings')
+  }
+
   onTermSubmit = term => {
     youtube.get('/search', { params: {
       q: term,
     }
     }).then(e=>{
       console.log(e.data.items)
-      this.setState({videos: e.data.items})
+      this.setState({selectedVideo: e.data.items[0],videos: e.data.items})
     })
   };
 
@@ -23,10 +27,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="ui container">
         <SearchBar onTermSubmit={this.onTermSubmit} />
-        <VideoDetail video={this.state.selectedVideo} />
-        <VideoList videos={this.state.videos} onVideoSelected={this.onVideoSelected} />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="eleven wide column">
+              <VideoDetail video={this.state.selectedVideo} />
+            </div>
+            <div className="five wide column">
+              <VideoList videos={this.state.videos} onVideoSelected={this.onVideoSelected} />
+            </div>
+          </div>
+        </div>
+        
       </div>
     );
   }
